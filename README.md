@@ -52,9 +52,10 @@ Do not commit authentication profiles or environment-specific secrets. Confirm t
 | `CalendarStartDate` | Text | Offset-aware ISO 8601 anchor date |
 | `ViewMode` | Text | `day`, `week`, or `month` |
 | `ReadOnly` | Two options | Defaults to read-only; this initial phase does not implement editing |
+| `ShowVehicleDetails` | Two options | Defaults to false. When true, shows make/model/year and current location/status under each vehicle registration |
 | `StatusColorsJson` | Multiline text | Optional status-to-hex-colour map |
 
-Vehicle objects accept `id`/`ID`, `title`/`Title`, and optional registration, branch, and condition. Booking objects accept `id`/`ID`, `vehicleId`/`VehicleID`, `title`/`Title`, `start`/`StartDate`/`PickupDate`, `end`/`EndDate`/`ReturnDate`, and `status`/`HireStatus`/`BookingStatus`. Vehicle IDs are normalized to strings. Lookup-shaped IDs such as `{ "Id": 101, "Value": "..." }` and numeric IDs are both accepted. Dates must be timestamps with an explicit `Z` or UTC offset. Intervals use `[start, end)` and require a positive duration.
+Vehicle objects accept `id`/`ID`, `title`/`Title`, and optional registration, branch, and the detail fields shown by `ShowVehicleDetails`: `Make`/`VehicleMake`, `Model`/`VehicleModel`, `Year`/`VehicleYear`, `VehicleCurrentLocation`/`CurrentLocation` (Lookup `{ "Id", "Value" }` or text) and `VehicleCondition`/`CurrentStatus` (text or Choice `{ "Value" }`). Missing fields are simply omitted from the label. Booking objects accept `id`/`ID`, `vehicleId`/`VehicleID`, `title`/`Title`, `start`/`StartDate`/`PickupDate`, `end`/`EndDate`/`ReturnDate`, and `status`/`HireStatus`/`BookingStatus`. Vehicle IDs are normalized to strings. Lookup-shaped IDs such as `{ "Id": 101, "Value": "..." }` and numeric IDs are both accepted. Dates must be timestamps with an explicit `Z` or UTC offset. Intervals use `[start, end)` and require a positive duration.
 
 Outputs:
 

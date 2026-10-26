@@ -56,6 +56,7 @@ export class VehicleBookingTimeline
       visibleRange: this.visibleRange,
       selectedBookingId: this.selectedBookingId,
       readOnly: context.parameters.ReadOnly.raw ?? true,
+      showVehicleDetails: context.parameters.ShowVehicleDetails.raw ?? false,
       height: context.mode.allocatedHeight > 0 ? context.mode.allocatedHeight : undefined,
       onSelectBooking: this.handleSelectBooking,
       onVisibleRangeChange: this.handleVisibleRangeChange,

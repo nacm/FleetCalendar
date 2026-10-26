@@ -11,6 +11,10 @@ export interface Vehicle {
   registration?: string;
   branch?: string;
   condition?: string;
+  make?: string;
+  model?: string;
+  year?: string;
+  currentLocation?: string;
 }
 
 export interface Booking {

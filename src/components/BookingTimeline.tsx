@@ -1,6 +1,6 @@
 import * as React from "react";
 import Timeline, { TimelineGroupBase, TimelineItemBase } from "react-calendar-timeline";
-import { Booking, DateRange, StatusColors, TimelineData, ViewMode } from "../types/booking";
+import { Booking, DateRange, StatusColors, TimelineData, Vehicle, ViewMode } from "../types/booking";
 import { buildDateRange, moveDateRange } from "../utils/dates";
 import { getStatusColor, getStatusTextColor } from "../utils/mapping";
 import { TimelineToolbar } from "./TimelineToolbar";
@@ -9,6 +9,7 @@ import "react-calendar-timeline/lib/Timeline.css";
 interface TimelineGroup extends TimelineGroupBase {
   id: string;
   title: string;
+  vehicle: Vehicle;
 }
 
 interface TimelineItem extends TimelineItemBase<number> {
@@ -27,6 +28,7 @@ interface BookingTimelineProps {
   selectedBookingId: string;
   readOnly: boolean;
   height?: number;
+  showVehicleDetails?: boolean;
   onSelectBooking: (bookingId: string) => void;
   onVisibleRangeChange: (range: DateRange) => void;
   onViewModeChange: (mode: ViewMode) => void;
@@ -34,6 +36,16 @@ interface BookingTimelineProps {
 
 function formatBookingLabel(booking: Booking): string {
   return `${booking.title} · ${booking.status}`;
+}
+
+function getVehicleDetailLines(vehicle: Vehicle): string[] {
+  const makeModelYear = [vehicle.make, vehicle.model, vehicle.year]
+    .filter(Boolean)
+    .join(" ");
+  const locationStatus = [vehicle.currentLocation, vehicle.condition]
+    .filter(Boolean)
+    .join(" · ");
+  return [makeModelYear, locationStatus].filter((line) => line.length > 0);
 }
 
 export function BookingTimeline({
@@ -44,6 +56,7 @@ export function BookingTimeline({
   selectedBookingId,
   readOnly,
   height,
+  showVehicleDetails = false,
   onSelectBooking,
   onVisibleRangeChange,
   onViewModeChange,
@@ -55,8 +68,31 @@ export function BookingTimeline({
         title: vehicle.registration
           ? `${vehicle.title} · ${vehicle.registration}`
           : vehicle.title,
+        vehicle,
       })),
     [data.vehicles]
+  );
+
+  const hasVehicleDetails = React.useMemo(
+    () => showVehicleDetails && data.vehicles.some((vehicle) => getVehicleDetailLines(vehicle).length > 0),
+    [showVehicleDetails, data.vehicles]
+  );
+
+  const renderGroup = React.useCallback(
+    ({ group }: { group: TimelineGroup }): React.ReactNode => {
+      const lines = showVehicleDetails ? getVehicleDetailLines(group.vehicle) : [];
+      return (
+        <div className="fleet-vehicle-label">
+          <div className="fleet-vehicle-title">{group.title}</div>
+          {lines.map((line) => (
+            <div key={line} className="fleet-vehicle-detail">
+              {line}
+            </div>
+          ))}
+        </div>
+      );
+    },
+    [showVehicleDetails]
   );
 
   const vehicleTitles = React.useMemo(
@@ -173,8 +209,9 @@ export function BookingTimeline({
               canResize={false}
               stackItems
               itemHeightRatio={0.78}
-              sidebarWidth={230}
-              lineHeight={48}
+              sidebarWidth={hasVehicleDetails ? 260 : 230}
+              lineHeight={hasVehicleDetails ? 76 : 48}
+              groupRenderer={renderGroup}
               minZoom={60 * 60 * 1000}
               maxZoom={366 * 24 * 60 * 60 * 1000}
               buffer={2}

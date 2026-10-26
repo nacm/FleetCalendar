@@ -3,7 +3,7 @@
   <control
     namespace="FleetSchedule"
     constructor="VehicleBookingTimeline"
-    version="1.0.0"
+    version="1.0.1"
     display-name-key="VehicleBookingTimeline"
     description-key="VehicleBookingTimeline_Description"
     control-type="virtual">
@@ -39,6 +39,13 @@
       name="ReadOnly"
       display-name-key="ReadOnly"
       description-key="ReadOnly_Description"
+      of-type="TwoOptions"
+      usage="input"
+      required="false" />
+    <property
+      name="ShowVehicleDetails"
+      display-name-key="ShowVehicleDetails"
+      description-key="ShowVehicleDetails_Description"
       of-type="TwoOptions"
       usage="input"
       required="false" />

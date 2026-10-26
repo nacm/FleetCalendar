@@ -42,6 +42,12 @@
   <data name="ViewMode_Description" xml:space="preserve">
     <value>Calendar period: day, week, or month</value>
   </data>
+  <data name="ShowVehicleDetails" xml:space="preserve">
+    <value>Show vehicle details</value>
+  </data>
+  <data name="ShowVehicleDetails_Description" xml:space="preserve">
+    <value>When true, shows make, model, year, current location and current status under each vehicle registration. Defaults to false.</value>
+  </data>
   <data name="ReadOnly" xml:space="preserve">
     <value>Read only</value>
   </data>

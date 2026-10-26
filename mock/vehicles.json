@@ -1,7 +1,7 @@
 [
-  { "ID": 1, "Title": "Toyota Hilux", "Registration": "1ABC123", "Branch": "Perth" },
-  { "ID": 2, "Title": "Toyota Camry", "Registration": "1XYZ789", "Branch": "Perth" },
-  { "ID": 3, "Title": "Ford Ranger", "Registration": "1DEF456", "Branch": "Fremantle" },
-  { "ID": 4, "Title": "Isuzu D-Max", "Registration": "1GHI321", "Branch": "Fremantle" },
-  { "ID": 5, "Title": "Mazda CX-5", "Registration": "1JKL654", "Branch": "Perth" }
+  { "ID": 1, "Title": "Toyota Hilux", "Registration": "1ABC123", "Branch": "Perth", "Make": "Toyota", "Model": "Hilux", "Year": 2022, "VehicleCurrentLocation":"Newman" , "VehicleCondition": "Ready for Hire" },
+  { "ID": 2, "Title": "Toyota Camry", "Registration": "1XYZ789", "Branch": "Perth", "Make": "Toyota", "Model": "Camry", "Year": 2021, "VehicleCurrentLocation": { "Id": 1, "Value": "Perth Depot" }, "VehicleCondition": "Ready for Hire" },
+  { "ID": 3, "Title": "Ford Ranger", "Registration": "1DEF456", "Branch": "Fremantle", "Make": "Ford", "Model": "Ranger", "Year": 2023, "VehicleCurrentLocation": { "Id": 2, "Value": "Fremantle Yard" }, "VehicleCondition": "On Hire" },
+  { "ID": 4, "Title": "Isuzu D-Max", "Registration": "1GHI321", "Branch": "Fremantle", "Make": "Isuzu", "Model": "D-Max", "Year": 2020, "VehicleCurrentLocation": { "Id": 2, "Value": "Fremantle Yard" }, "VehicleCondition": "Maintenance" },
+  { "ID": 5, "Title": "Mazda CX-5", "Registration": "1JKL654", "Branch": "Perth", "Make": "Mazda", "Model": "CX-5", "Year": 2024, "VehicleCurrentLocation": { "Id": 1, "Value": "Perth Depot" }, "VehicleCondition": "Damaged" }
 ]

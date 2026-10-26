@@ -7,6 +7,34 @@ import {
 } from "../src/utils/mapping";
 
 describe("parseTimelineData", () => {
+  it("maps vehicle metadata including lookup, choice and numeric shapes", () => {
+    const data = parseTimelineData(
+      JSON.stringify([
+        {
+          ID: 1,
+          Title: "1ABC123",
+          Make: "Toyota",
+          Model: { Value: "Hilux" },
+          Year: 2022,
+          VehicleCurrentLocation: { Id: 7, Value: "Perth Depot" },
+          VehicleCondition: "Ready for Hire",
+        },
+        { ID: 2, Title: "1XYZ789" },
+      ]),
+      "[]"
+    );
+
+    expect(data.vehicles[0]).toMatchObject({
+      make: "Toyota",
+      model: "Hilux",
+      year: "2022",
+      currentLocation: "Perth Depot",
+      condition: "Ready for Hire",
+    });
+    expect(data.vehicles[1].make).toBeUndefined();
+    expect(data.vehicles[1].currentLocation).toBeUndefined();
+  });
+
   it("normalizes numeric and SharePoint lookup vehicle IDs to matching strings", () => {
     const data = parseTimelineData(
       JSON.stringify([{ ID: 101, Title: "Fleet vehicle" }]),

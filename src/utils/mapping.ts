@@ -53,6 +53,17 @@ function optionalText(value: unknown): string | undefined {
     : undefined;
 }
 
+// Accepts text, numbers (e.g. Year), and SharePoint Lookup/Choice shapes such as { Id, Value }.
+function optionalLabel(value: unknown): string | undefined {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    return String(value);
+  }
+  if (isRecord(value)) {
+    return optionalText(readField(value, "Value", "value", "Title", "DisplayName"));
+  }
+  return optionalText(value);
+}
+
 function parseJsonArray(
   json: string,
   label: string,
@@ -108,9 +119,22 @@ export function parseTimelineData(
       registration: optionalText(
         readField(row, "registration", "Registration", "VehicleRego")
       ),
-      branch: optionalText(readField(row, "branch", "Branch")),
-      condition: optionalText(
-        readField(row, "condition", "VehicleCondition", "VehicleStatus")
+      branch: optionalLabel(readField(row, "branch", "Branch")),
+      condition: optionalLabel(
+        readField(
+          row,
+          "condition",
+          "currentStatus",
+          "CurrentStatus",
+          "VehicleCondition",
+          "VehicleStatus"
+        )
+      ),
+      make: optionalLabel(readField(row, "make", "Make", "VehicleMake")),
+      model: optionalLabel(readField(row, "model", "Model", "VehicleModel")),
+      year: optionalLabel(readField(row, "year", "Year", "VehicleYear", "ModelYear")),
+      currentLocation: optionalLabel(
+        readField(row, "currentLocation", "CurrentLocation", "VehicleCurrentLocation")
       ),
     });
   });

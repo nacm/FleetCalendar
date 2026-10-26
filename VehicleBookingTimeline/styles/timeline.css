@@ -94,6 +94,34 @@
   z-index: 83 !important;
 }
 
+.fleet-timeline-canvas .rct-sidebar-row {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.fleet-vehicle-label {
+  line-height: 1.25;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+}
+
+.fleet-vehicle-title {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fleet-vehicle-detail {
+  color: #4b5563;
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .fleet-timeline-legend {
   max-height: 72px;
   overflow: auto;
