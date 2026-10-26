@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="VehicleBookingTimeline" xml:space="preserve">
+    <value>Vehicle booking timeline</value>
+  </data>
+  <data name="VehicleBookingTimeline_Description" xml:space="preserve">
+    <value>Read-only vehicle booking resource calendar</value>
+  </data>
+  <data name="VehiclesJson" xml:space="preserve">
+    <value>Vehicles JSON</value>
+  </data>
+  <data name="VehiclesJson_Description" xml:space="preserve">
+    <value>JSON array of vehicle resources</value>
+  </data>
+  <data name="BookingsJson" xml:space="preserve">
+    <value>Bookings JSON</value>
+  </data>
+  <data name="BookingsJson_Description" xml:space="preserve">
+    <value>JSON array of bookings in the requested range</value>
+  </data>
+  <data name="CalendarStartDate" xml:space="preserve">
+    <value>Calendar start date</value>
+  </data>
+  <data name="CalendarStartDate_Description" xml:space="preserve">
+    <value>Offset-aware ISO 8601 date used to position the calendar</value>
+  </data>
+  <data name="ViewMode" xml:space="preserve">
+    <value>View mode</value>
+  </data>
+  <data name="ViewMode_Description" xml:space="preserve">
+    <value>Calendar period: day, week, or month</value>
+  </data>
+  <data name="ReadOnly" xml:space="preserve">
+    <value>Read only</value>
+  </data>
+  <data name="ReadOnly_Description" xml:space="preserve">
+    <value>Booking editing is disabled in this initial release</value>
+  </data>
+  <data name="StatusColorsJson" xml:space="preserve">
+    <value>Status colors JSON</value>
+  </data>
+  <data name="StatusColorsJson_Description" xml:space="preserve">
+    <value>Optional status-to-hex-color mapping</value>
+  </data>
+  <data name="SelectedBookingId" xml:space="preserve">
+    <value>Selected booking ID</value>
+  </data>
+  <data name="SelectedBookingId_Description" xml:space="preserve">
+    <value>ID of the most recently selected booking</value>
+  </data>
+  <data name="VisibleRangeJson" xml:space="preserve">
+    <value>Visible range JSON</value>
+  </data>
+  <data name="VisibleRangeJson_Description" xml:space="preserve">
+    <value>Visible start and exclusive end timestamps</value>
+  </data>
+  <data name="ActionSequence" xml:space="preserve">
+    <value>Action sequence</value>
+  </data>
+  <data name="ActionSequence_Description" xml:space="preserve">
+    <value>Increments when selection or visible range changes</value>
+  </data>
+</root>

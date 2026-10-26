@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "power-apps-code-app-scaffold": {
+      "source": "github/awesome-copilot",
+      "sourceType": "github",
+      "skillPath": "skills/power-apps-code-app-scaffold/SKILL.md",
+      "computedHash": "6d09e31150a185313f7fc8c001814edea2710810f25f07991f16b7a3dad20352"
+    }
+  }
+}

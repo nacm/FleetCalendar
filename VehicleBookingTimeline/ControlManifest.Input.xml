@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<manifest>
+  <control
+    namespace="FleetSchedule"
+    constructor="VehicleBookingTimeline"
+    version="1.0.0"
+    display-name-key="VehicleBookingTimeline"
+    description-key="VehicleBookingTimeline_Description"
+    control-type="virtual">
+    <property
+      name="VehiclesJson"
+      display-name-key="VehiclesJson"
+      description-key="VehiclesJson_Description"
+      of-type="Multiple"
+      usage="input"
+      required="false" />
+    <property
+      name="BookingsJson"
+      display-name-key="BookingsJson"
+      description-key="BookingsJson_Description"
+      of-type="Multiple"
+      usage="input"
+      required="false" />
+    <property
+      name="CalendarStartDate"
+      display-name-key="CalendarStartDate"
+      description-key="CalendarStartDate_Description"
+      of-type="SingleLine.Text"
+      usage="input"
+      required="false" />
+    <property
+      name="ViewMode"
+      display-name-key="ViewMode"
+      description-key="ViewMode_Description"
+      of-type="SingleLine.Text"
+      usage="input"
+      required="false" />
+    <property
+      name="ReadOnly"
+      display-name-key="ReadOnly"
+      description-key="ReadOnly_Description"
+      of-type="TwoOptions"
+      usage="input"
+      required="false" />
+    <property
+      name="StatusColorsJson"
+      display-name-key="StatusColorsJson"
+      description-key="StatusColorsJson_Description"
+      of-type="Multiple"
+      usage="input"
+      required="false" />
+    <property
+      name="SelectedBookingId"
+      display-name-key="SelectedBookingId"
+      description-key="SelectedBookingId_Description"
+      of-type="SingleLine.Text"
+      usage="output"
+      required="false" />
+    <property
+      name="VisibleRangeJson"
+      display-name-key="VisibleRangeJson"
+      description-key="VisibleRangeJson_Description"
+      of-type="Multiple"
+      usage="output"
+      required="false" />
+    <property
+      name="ActionSequence"
+      display-name-key="ActionSequence"
+      description-key="ActionSequence_Description"
+      of-type="Whole.None"
+      usage="output"
+      required="false" />
+    <resources>
+      <code path="index.ts" order="1" />
+      <css path="styles/timeline.css" order="1" />
+      <resx path="strings/VehicleBookingTimeline.1033.resx" version="1.0.0" />
+      <platform-library name="React" version="16.14.0" />
+    </resources>
+  </control>
+</manifest>

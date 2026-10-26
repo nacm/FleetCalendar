@@ -1,0 +1,12 @@
+[
+  { "ID": 101, "VehicleID": 1, "Title": "Site visit - Kwinana", "StartDate": "2026-10-26T08:00:00+08:00", "EndDate": "2026-10-27T17:00:00+08:00", "BookingStatus": "Active" },
+  { "ID": 102, "VehicleID": 1, "Title": "Client meeting", "StartDate": "2026-10-28T09:00:00+08:00", "EndDate": "2026-10-28T15:00:00+08:00", "BookingStatus": "Confirmed" },
+  { "ID": 103, "VehicleID": 1, "Title": "Depot transfer", "StartDate": "2026-10-28T15:00:00+08:00", "EndDate": "2026-10-29T12:00:00+08:00", "BookingStatus": "Pending" },
+  { "ID": 104, "VehicleID": 2, "Title": "Airport pickup", "StartDate": "2026-10-25T06:00:00+08:00", "EndDate": "2026-10-26T10:00:00+08:00", "BookingStatus": "Returned" },
+  { "ID": 105, "VehicleID": 2, "Title": "Regional trip - Bunbury", "StartDate": "2026-10-29T07:00:00+08:00", "EndDate": "2026-10-31T18:00:00+08:00", "BookingStatus": "Confirmed" },
+  { "ID": 106, "VehicleID": { "Id": 3, "Value": "Ford Ranger" }, "Title": "Survey crew", "StartDate": "2026-10-26T07:30:00+08:00", "EndDate": "2026-10-30T16:30:00+08:00", "BookingStatus": "Active" },
+  { "ID": 107, "VehicleID": 4, "Title": "Scheduled service", "StartDate": "2026-10-27T08:00:00+08:00", "EndDate": "2026-10-28T08:00:00+08:00", "BookingStatus": "Maintenance" },
+  { "ID": 108, "VehicleID": 4, "Title": "Cancelled hire", "StartDate": "2026-10-30T09:00:00+08:00", "EndDate": "2026-11-01T09:00:00+08:00", "BookingStatus": "Cancelled" },
+  { "ID": 109, "VehicleID": "5", "Title": "Executive transfer", "StartDate": "2026-10-27T13:00:00Z", "EndDate": "2026-10-27T23:00:00Z", "BookingStatus": "Confirmed" },
+  { "ID": 110, "VehicleID": 5, "Title": "Training day", "StartDate": "2026-10-29T08:00:00+08:00", "EndDate": "2026-10-30T08:00:00+08:00", "BookingStatus": "Pending" }
+]

@@ -1,0 +1,108 @@
+.fleet-booking-timeline {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  height: 100%;
+  min-height: 260px;
+  overflow: hidden;
+  color: #1f2937;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-size: 13px;
+}
+
+.fleet-timeline-toolbar,
+.fleet-timeline-navigation,
+.fleet-timeline-view-modes,
+.fleet-timeline-legend {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.fleet-timeline-toolbar {
+  justify-content: space-between;
+}
+
+.fleet-timeline-toolbar button {
+  background: #ffffff;
+  border: 1px solid #9ca3af;
+  border-radius: 3px;
+  color: #1f2937;
+  cursor: pointer;
+  min-height: 32px;
+  padding: 5px 10px;
+}
+
+.fleet-timeline-toolbar button:hover,
+.fleet-timeline-toolbar button:focus-visible {
+  border-color: #1d4ed8;
+  outline: 2px solid #93c5fd;
+  outline-offset: 1px;
+}
+
+.fleet-timeline-toolbar button[aria-pressed="true"] {
+  background: #1d4ed8;
+  border-color: #1d4ed8;
+  color: #ffffff;
+}
+
+.fleet-timeline-warning,
+.fleet-timeline-empty,
+.fleet-timeline-empty-bookings {
+  border-radius: 3px;
+  padding: 8px 10px;
+}
+
+.fleet-timeline-warning {
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #7c2d12;
+}
+
+.fleet-timeline-empty,
+.fleet-timeline-empty-bookings {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.fleet-timeline-canvas {
+  flex: 1 1 auto;
+  min-height: 120px;
+  overflow: auto;
+}
+
+.fleet-timeline-canvas .rct-calendar-header {
+  z-index: 2;
+}
+
+.fleet-timeline-canvas .rct-item:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: 2px;
+  z-index: 3;
+}
+
+.fleet-timeline-canvas .rct-item[aria-selected="true"] {
+  box-shadow: 0 0 0 2px #111827;
+}
+
+.fleet-timeline-legend {
+  max-height: 72px;
+  overflow: auto;
+  padding: 2px 0;
+}
+
+.fleet-timeline-legend-item {
+  align-items: center;
+  display: inline-flex;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.fleet-timeline-legend-swatch {
+  border-radius: 2px;
+  display: inline-block;
+  height: 12px;
+  width: 12px;
+}

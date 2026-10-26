@@ -1,0 +1,7 @@
+[
+  { "ID": 1, "Title": "Toyota Hilux", "Registration": "1ABC123", "Branch": "Perth" },
+  { "ID": 2, "Title": "Toyota Camry", "Registration": "1XYZ789", "Branch": "Perth" },
+  { "ID": 3, "Title": "Ford Ranger", "Registration": "1DEF456", "Branch": "Fremantle" },
+  { "ID": 4, "Title": "Isuzu D-Max", "Registration": "1GHI321", "Branch": "Fremantle" },
+  { "ID": 5, "Title": "Mazda CX-5", "Registration": "1JKL654", "Branch": "Perth" }
+]
