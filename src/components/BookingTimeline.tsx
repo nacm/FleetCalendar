@@ -26,6 +26,7 @@ interface BookingTimelineProps {
   visibleRange: DateRange;
   selectedBookingId: string;
   readOnly: boolean;
+  height?: number;
   onSelectBooking: (bookingId: string) => void;
   onVisibleRangeChange: (range: DateRange) => void;
   onViewModeChange: (mode: ViewMode) => void;
@@ -42,6 +43,7 @@ export function BookingTimeline({
   visibleRange,
   selectedBookingId,
   readOnly,
+  height,
   onSelectBooking,
   onVisibleRangeChange,
   onViewModeChange,
@@ -79,14 +81,16 @@ export function BookingTimeline({
           end_time: booking.end,
           canMove: false,
           canResize: false,
+          className: selectedBookingId === booking.id ? "fleet-booking-selected" : "",
           itemProps: {
             title: fullLabel,
             "aria-label": fullLabel,
             tabIndex: 0,
             "aria-selected": selectedBookingId === booking.id,
             style: {
-              backgroundColor: getStatusColor(booking.status, statusColors),
-              borderColor: getStatusColor(booking.status, statusColors),
+              // Library defaults use the `background`/`border` shorthands, so longhands lose when an item is selected.
+              background: getStatusColor(booking.status, statusColors),
+              border: `1px solid ${getStatusColor(booking.status, statusColors)}`,
               color: getStatusTextColor(
                 getStatusColor(booking.status, statusColors)
               ),
@@ -120,7 +124,11 @@ export function BookingTimeline({
   };
 
   return (
-    <section className="fleet-booking-timeline" aria-label="Vehicle booking timeline">
+    <section
+      className="fleet-booking-timeline"
+      style={height ? { height } : undefined}
+      aria-label="Vehicle booking timeline"
+    >
       <TimelineToolbar
         viewMode={viewMode}
         onNavigate={navigate}

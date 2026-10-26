@@ -32,6 +32,7 @@ export class VehicleBookingTimeline
     notifyOutputChanged: () => void
   ): void {
     this.notifyOutputChanged = notifyOutputChanged;
+    context.mode.trackContainerResize(true);
     this.syncInputs(context, false);
     this.notifyOutputChanged();
   }
@@ -55,6 +56,7 @@ export class VehicleBookingTimeline
       visibleRange: this.visibleRange,
       selectedBookingId: this.selectedBookingId,
       readOnly: context.parameters.ReadOnly.raw ?? true,
+      height: context.mode.allocatedHeight > 0 ? context.mode.allocatedHeight : undefined,
       onSelectBooking: this.handleSelectBooking,
       onVisibleRangeChange: this.handleVisibleRangeChange,
       onViewModeChange: this.handleViewModeChange,

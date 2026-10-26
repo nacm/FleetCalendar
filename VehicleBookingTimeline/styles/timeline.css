@@ -73,6 +73,12 @@
   overflow: auto;
 }
 
+.fleet-timeline-canvas .rct-header-root {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+}
+
 .fleet-timeline-canvas .rct-calendar-header {
   z-index: 2;
 }
@@ -83,8 +89,9 @@
   z-index: 3;
 }
 
-.fleet-timeline-canvas .rct-item[aria-selected="true"] {
-  box-shadow: 0 0 0 2px #111827;
+.fleet-timeline-canvas .rct-item.fleet-booking-selected {
+  box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #111827;
+  z-index: 83 !important;
 }
 
 .fleet-timeline-legend {
