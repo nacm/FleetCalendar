@@ -97,7 +97,7 @@
 .fleet-timeline-canvas .rct-sidebar-row {
   align-items: center;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
 }
 
 .fleet-vehicle-label {

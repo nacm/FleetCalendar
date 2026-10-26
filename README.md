@@ -41,6 +41,14 @@ dotnet msbuild /p:Configuration=Release
 pac solution import --path <path-to-built-solution-zip>
 ```
 
+
+## Rebuild with updates
+```powershell
+Set-Location solution
+dotnet msbuild /t:restore
+dotnet msbuild /t:Rebuild /p:Configuration=Release
+```
+
 Do not commit authentication profiles or environment-specific secrets. Confirm that the target environment permits custom controls and that the Canvas app uses the same control version.
 
 ## PCF input contract
