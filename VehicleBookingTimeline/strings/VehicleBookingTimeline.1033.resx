@@ -48,6 +48,24 @@
   <data name="ShowVehicleDetails_Description" xml:space="preserve">
     <value>When true, shows make, model, year, current location and current status under each vehicle registration. Defaults to false.</value>
   </data>
+  <data name="JobsJson" xml:space="preserve">
+    <value>Jobs JSON</value>
+  </data>
+  <data name="JobsJson_Description" xml:space="preserve">
+    <value>Optional JSON array of maintenance jobs (id, vehicleId, title, status). Vehicles with a job whose status is not Completed are flagged in the right sidebar.</value>
+  </data>
+  <data name="LeftSidebarLabel" xml:space="preserve">
+    <value>Left sidebar label</value>
+  </data>
+  <data name="LeftSidebarLabel_Description" xml:space="preserve">
+    <value>Optional header text above the left (vehicle) sidebar</value>
+  </data>
+  <data name="RightSidebarLabel" xml:space="preserve">
+    <value>Right sidebar label</value>
+  </data>
+  <data name="RightSidebarLabel_Description" xml:space="preserve">
+    <value>Optional header text above the right (open jobs) sidebar</value>
+  </data>
   <data name="ReadOnly" xml:space="preserve">
     <value>Read only</value>
   </data>

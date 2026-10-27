@@ -105,6 +105,18 @@
   z-index: 83 !important;
 }
 
+.fleet-sidebar-header {
+  align-items: center;
+  color: #ffffff;
+  display: flex;
+  font-weight: 600;
+  justify-content: flex-start;
+  overflow: hidden;
+  padding: 0 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .fleet-timeline-canvas .rct-sidebar-row {
   align-items: center;
   display: flex;
@@ -154,6 +166,37 @@
   font-size: 11px;
   margin-left: auto;
   white-space: nowrap;
+}
+
+.fleet-job-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1.2;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 8px;
+  text-align: left;
+}
+
+.fleet-job-badge {
+  background: #fef3c7;
+  border: 1px solid #b45309;
+  border-radius: 3px;
+  color: #78350f;
+  font-size: 11px;
+  font-weight: 600;
+  overflow: hidden;
+  padding: 1px 6px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: fit-content;
+  max-width: 100%;
+}
+
+.fleet-job-none {
+  color: #6b7280;
+  font-size: 11px;
 }
 
 .fleet-vehicle-label {

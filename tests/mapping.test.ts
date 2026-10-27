@@ -2,9 +2,39 @@ import { describe, expect, it } from "vitest";
 import {
   getStatusColor,
   getStatusTextColor,
+  isOpenJob,
+  parseMaintenanceJobs,
   parseStatusColors,
   parseTimelineData,
 } from "../src/utils/mapping";
+
+describe("parseMaintenanceJobs", () => {
+  it("maps lookup vehicles and choice status, and flags only non-Completed jobs as open", () => {
+    const issues: string[] = [];
+    const jobs = parseMaintenanceJobs(
+      JSON.stringify([
+        { ID: 1, Title: "Brakes", Vehicle: { Id: 5, Value: "Hilux" }, Job_Status: { Value: "In Progress" } },
+        { ID: 2, Vehicle: { Id: 5, Value: "Hilux" }, Job_Status: { Value: "Completed" } },
+        { ID: 3, Vehicle: { Id: 9, Value: "Other" }, Job_Status: "New" },
+        { ID: 4, Vehicle: 5 },
+        { ID: 5, Job_Status: "New" },
+      ]),
+      new Set(["5"]),
+      issues
+    );
+
+    expect(jobs.map((job) => job.id)).toEqual(["1", "2", "4"]);
+    expect(jobs[0]).toMatchObject({ vehicleId: "5", title: "Brakes", status: "In Progress" });
+    expect(jobs.filter(isOpenJob).map((job) => job.id)).toEqual(["1", "4"]);
+    expect(issues).toEqual(["Job row 5 has no valid vehicle and was skipped."]);
+  });
+
+  it("reports malformed JSON", () => {
+    const issues: string[] = [];
+    expect(parseMaintenanceJobs("{", new Set(), issues)).toEqual([]);
+    expect(issues).toEqual(["JobsJson contains invalid JSON."]);
+  });
+});
 
 describe("parseTimelineData", () => {
   it("maps vehicle metadata including lookup, choice and numeric shapes", () => {

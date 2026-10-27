@@ -1,6 +1,12 @@
 import * as React from "react";
-import Timeline, { TimelineGroupBase, TimelineItemBase } from "react-calendar-timeline";
-import { Booking, DateRange, StatusColors, TimelineData, Vehicle, ViewMode } from "../types/booking";
+import Timeline, {
+  DateHeader,
+  SidebarHeader,
+  TimelineGroupBase,
+  TimelineHeaders,
+  TimelineItemBase,
+} from "react-calendar-timeline";
+import { Booking, DateRange, MaintenanceJob, StatusColors, TimelineData, Vehicle, ViewMode } from "../types/booking";
 import { buildDateRange, moveDateRange } from "../utils/dates";
 import { getStatusColor, getStatusTextColor } from "../utils/mapping";
 import { computeDailyUtilization, getUtilizationColors } from "../utils/utilization";
@@ -24,6 +30,8 @@ interface TimelineGroup extends TimelineGroupBase {
 
 const UNCATEGORISED = "Uncategorised";
 const CATEGORY_ID_PREFIX = "category::";
+const EMPTY_JOBS: MaintenanceJob[] = [];
+const JOBS_SIDEBAR_WIDTH = 210;
 
 function todayColumnClass(start: number, end: number): string[] {
   const now = Date.now();
@@ -41,6 +49,10 @@ interface TimelineItem extends TimelineItemBase<number> {
 
 interface BookingTimelineProps {
   data: TimelineData;
+  jobs?: MaintenanceJob[];
+  showJobs?: boolean;
+  leftSidebarLabel?: string;
+  rightSidebarLabel?: string;
   statusColors: StatusColors;
   viewMode: ViewMode;
   visibleRange: DateRange;
@@ -69,6 +81,10 @@ function getVehicleDetailLines(vehicle: Vehicle): string[] {
 
 export function BookingTimeline({
   data,
+  jobs = EMPTY_JOBS,
+  showJobs = false,
+  leftSidebarLabel = "",
+  rightSidebarLabel = "",
   statusColors,
   viewMode,
   visibleRange,
@@ -158,8 +174,50 @@ export function BookingTimeline({
     [showVehicleDetails, data.vehicles]
   );
 
+  const openJobsByVehicle = React.useMemo(() => {
+    const map = new Map<string, MaintenanceJob[]>();
+    jobs.forEach((job) => map.set(job.vehicleId, [...(map.get(job.vehicleId) ?? []), job]));
+    return map;
+  }, [jobs]);
+
   const renderGroup = React.useCallback(
-    ({ group }: { group: TimelineGroup }): React.ReactNode => {
+    ({
+      group,
+      isRightSidebar,
+    }: {
+      group: TimelineGroup;
+      isRightSidebar?: boolean;
+    }): React.ReactNode => {
+      if (isRightSidebar) {
+        if (group.category) {
+          const withJobs = group.category.vehicleIds.filter((id) => openJobsByVehicle.has(id)).length;
+          return withJobs > 0 ? (
+            <div className="fleet-job-cell">
+              <span className="fleet-job-badge">
+                {withJobs} with open jobs
+              </span>
+            </div>
+          ) : (
+            <div className="fleet-job-cell fleet-job-none">No open jobs</div>
+          );
+        }
+
+        const open = group.vehicle ? openJobsByVehicle.get(group.vehicle.id) : undefined;
+        if (!open || open.length === 0) {
+          return <div className="fleet-job-cell fleet-job-none">No open jobs</div>;
+        }
+        const summary = `${open.length} open job${open.length === 1 ? "" : "s"}`;
+        const statuses = Array.from(new Set(open.map((job) => job.status))).join(", ");
+        const tooltip = open
+          .map((job) => `#${job.id}${job.title ? ` ${job.title}` : ""} – ${job.status}`)
+          .join("\n");
+        return (
+          <div className="fleet-job-cell" title={tooltip} aria-label={`${summary}: ${statuses}`}>
+            <span className="fleet-job-badge">{`${summary} · ${statuses}`}</span>
+          </div>
+        );
+      }
+
       if (group.category) {
         const { name, expanded, vehicleCount, bookingCount } = group.category;
         return (
@@ -196,7 +254,7 @@ export function BookingTimeline({
         </div>
       );
     },
-    [showVehicleDetails, toggleCategory]
+    [openJobsByVehicle, showVehicleDetails, toggleCategory]
   );
 
   const vehicleTitles = React.useMemo(
@@ -373,10 +431,7 @@ export function BookingTimeline({
               items={items}
               visibleTimeStart={visibleRange.start}
               visibleTimeEnd={visibleRange.end}
-              onTimeChange={(start, end, updateScrollCanvas) => {
-                updateScrollCanvas(start, end);
-                onVisibleRangeChange({ start, end });
-              }}
+              onTimeChange={() => undefined}
               onItemSelect={(itemId) => {
                 if (!String(itemId).startsWith("utilization::")) {
                   onSelectBooking(String(itemId));
@@ -387,13 +442,35 @@ export function BookingTimeline({
               stackItems
               itemHeightRatio={0.50}
               sidebarWidth={hasVehicleDetails ? 260 : 230}
+              rightSidebarWidth={showJobs ? JOBS_SIDEBAR_WIDTH : 0}
               lineHeight={hasVehicleDetails ? 48 : 30}
               groupRenderer={renderGroup}
               verticalLineClassNamesForTime={todayColumnClass}
               minZoom={60 * 60 * 1000}
               maxZoom={366 * 24 * 60 * 60 * 1000}
-              buffer={2}
-            />
+              buffer={1}
+            >
+              <TimelineHeaders>
+                <SidebarHeader variant="left">
+                  {({ getRootProps }) => (
+                    <div {...getRootProps()} className="fleet-sidebar-header">
+                      {leftSidebarLabel}
+                    </div>
+                  )}
+                </SidebarHeader>
+                <DateHeader unit="primaryHeader" />
+                <DateHeader />
+                {showJobs && (
+                  <SidebarHeader variant="right">
+                    {({ getRootProps }) => (
+                      <div {...getRootProps()} className="fleet-sidebar-header">
+                        {rightSidebarLabel}
+                      </div>
+                    )}
+                  </SidebarHeader>
+                )}
+              </TimelineHeaders>
+            </Timeline>
           </div>
         </>
       )}

@@ -1,4 +1,4 @@
-import { Booking, StatusColors, TimelineData, Vehicle } from "../types/booking";
+import { Booking, MaintenanceJob, StatusColors, TimelineData, Vehicle } from "../types/booking";
 import { parseOffsetDate } from "./dates";
 
 const defaultColors: StatusColors = {
@@ -194,6 +194,52 @@ export function parseTimelineData(
   });
 
   return { vehicles, bookings, issues };
+}
+
+const CLOSED_JOB_STATUSES = new Set(["completed"]);
+
+// A job is open unless its status is Completed; a blank status counts as open.
+export function isOpenJob(job: MaintenanceJob): boolean {
+  return !CLOSED_JOB_STATUSES.has(job.status.trim().toLowerCase());
+}
+
+export function parseMaintenanceJobs(
+  json: string,
+  vehicleIds: ReadonlySet<string>,
+  issues: string[] = []
+): MaintenanceJob[] {
+  const rows = parseJsonArray(json, "JobsJson", issues);
+  const jobs: MaintenanceJob[] = [];
+
+  rows.forEach((row, index) => {
+    if (!isRecord(row)) {
+      issues.push(`Job row ${index + 1} is not an object and was skipped.`);
+      return;
+    }
+
+    const vehicleId = normalizeVehicleId(
+      readField(row, "vehicleId", "VehicleID", "Vehicle", "vehicle")
+    );
+    if (!vehicleId) {
+      issues.push(`Job row ${index + 1} has no valid vehicle and was skipped.`);
+      return;
+    }
+    // Jobs for vehicles outside the loaded set (e.g. another branch) are ignored quietly.
+    if (!vehicleIds.has(vehicleId)) {
+      return;
+    }
+
+    jobs.push({
+      id: normalizeId(readField(row, "id", "ID")) ?? String(index + 1),
+      vehicleId,
+      title: optionalLabel(readField(row, "title", "Title", "JobTitle", "Description")),
+      status:
+        optionalLabel(readField(row, "status", "Job_Status", "JobStatus")) ??
+        "Unspecified",
+    });
+  });
+
+  return jobs;
 }
 
 export function parseStatusColors(

@@ -27,6 +27,13 @@ export interface Booking {
   status: string;
 }
 
+export interface MaintenanceJob {
+  id: string;
+  vehicleId: string;
+  title?: string;
+  status: string;
+}
+
 export interface TimelineData {
   vehicles: Vehicle[];
   bookings: Booking[];

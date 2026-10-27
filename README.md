@@ -62,6 +62,26 @@ Do not commit authentication profiles or environment-specific secrets. Confirm t
 | `ReadOnly` | Two options | Defaults to read-only; this initial phase does not implement editing |
 | `ShowVehicleDetails` | Two options | Defaults to false. When true, shows make/model/year and current location/status under each vehicle registration |
 | `StatusColorsJson` | Multiline text | Optional status-to-hex-colour map |
+| `JobsJson` | Multiline text | Optional array of maintenance jobs. When supplied, a right sidebar shows each vehicle's open jobs |
+| `LeftSidebarLabel` | Text | Optional header text above the left (vehicle) sidebar. Blank shows no label |
+| `RightSidebarLabel` | Text | Optional header text above the right (open jobs) sidebar. Blank shows no label |
+
+The calendar shows exactly the selected period: 7 days (Monday–Sunday) in week view and only the days of the selected month in month view. Navigate with the toolbar buttons; drag/scroll and wheel zoom are disabled so extra days never appear.
+
+Jobs (`JobsJson`) accept `id`/`ID`, `vehicleId`/`VehicleID`/`Vehicle` (Lookup `{ "Id", "Value" }` or number), `title`/`Title`, and `status`/`Job_Status`/`JobStatus` (text or Choice `{ "Value" }`). A job is **open** unless its status is `Completed` (case-insensitive; a blank status counts as open). The right sidebar shows "N open jobs · status list" on each vehicle with open jobs (tooltip lists each job) and "No open jobs" otherwise; category rows show how many of their vehicles have open jobs. Jobs for vehicles not in `VehiclesJson` are ignored, and leaving `JobsJson` empty hides the sidebar. Load only open jobs when possible (filter `Job_Status <> "Completed"`) to keep the payload small. Example mapping:
+
+```powerfx
+JobsJson =
+    JSON(
+        ForAll(
+            Filter(Commercial_Job_Requests, Job_Status.Value <> "Completed"),
+            { id: ID, vehicleId: Vehicle.Id, title: Title, status: Job_Status.Value }
+        ),
+        JSONFormat.Compact
+    )
+```
+
+Adjust the column names to the list's internal names; if `Job_Status` is a text column use `Job_Status` instead of `Job_Status.Value`. Check delegation of the `<>` filter on a Choice column in your environment. See `mock/jobs.json` for sample data.
 
 Vehicle objects accept `id`/`ID`, `title`/`Title`, and optional registration, branch, and the detail fields shown by `ShowVehicleDetails`: `Make`/`VehicleMake`, `Model`/`VehicleModel`, `Year`/`VehicleYear`, `VehicleCurrentLocation`/`CurrentLocation` (Lookup `{ "Id", "Value" }` or text) and `VehicleCondition`/`CurrentStatus` (text or Choice `{ "Value" }`). Missing fields are simply omitted from the label. If any vehicle has `VehicleCategory`/`Category` (text, Choice or Lookup `{ "Value" }`), vehicles are grouped under collapsible category rows (sorted A–Z, vehicles without a category under "Uncategorised"). Categories start collapsed; click a category row (or use Expand all / Collapse all) to show its vehicles. Bookings are only drawn for expanded vehicles, and each category row shows its vehicle and booking counts. On the category row, each day shows the % of the category's vehicles booked ("Fully Booked" when all are). "Booked" means any non-cancelled booking overlapping that local day, counted only from the bookings supplied to the control (so load the full visible window), against all vehicles in the category whether expanded or not. Booking objects accept `id`/`ID`, `vehicleId`/`VehicleID`, `title`/`Title`, `start`/`StartDate`/`PickupDate`, `end`/`EndDate`/`ReturnDate`, and `status`/`HireStatus`/`BookingStatus`. Vehicle IDs are normalized to strings. Lookup-shaped IDs such as `{ "Id": 101, "Value": "..." }` and numeric IDs are both accepted. Dates must be timestamps with an explicit `Z` or UTC offset. Intervals use `[start, end)` and require a positive duration.
 

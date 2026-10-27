@@ -6,8 +6,13 @@ import {
   normalizeViewMode,
   parseOffsetDate,
 } from "../src/utils/dates";
-import { parseTimelineData, parseStatusColors } from "../src/utils/mapping";
-import { DateRange, ViewMode } from "../src/types/booking";
+import {
+  isOpenJob,
+  parseMaintenanceJobs,
+  parseTimelineData,
+  parseStatusColors,
+} from "../src/utils/mapping";
+import { DateRange, MaintenanceJob, ViewMode } from "../src/types/booking";
 
 export class VehicleBookingTimeline
   implements ComponentFramework.ReactControl<IInputs, IOutputs>
@@ -22,6 +27,9 @@ export class VehicleBookingTimeline
   private cachedVehiclesJson = "";
   private cachedBookingsJson = "";
   private cachedStatusColorsJson = "";
+  private cachedJobsJson = "";
+  private cachedJobs: MaintenanceJob[] = [];
+  private cachedJobIssues: string[] = [];
   private cachedData = parseTimelineData("", "");
   private cachedStatusColors = parseStatusColors("");
   private cachedColorIssues: string[] = [];
@@ -54,9 +62,14 @@ export class VehicleBookingTimeline
         issues: [
           ...this.cachedData.issues,
           ...this.cachedColorIssues,
+          ...this.cachedJobIssues,
           ...this.rangeInputIssues,
         ],
       },
+      jobs: this.cachedJobs,
+      showJobs: this.cachedJobsJson.trim().length > 0,
+      leftSidebarLabel: context.parameters.LeftSidebarLabel.raw?.trim() ?? "",
+      rightSidebarLabel: context.parameters.RightSidebarLabel.raw?.trim() ?? "",
       statusColors: this.cachedStatusColors,
       viewMode: this.viewMode,
       visibleRange: this.visibleRange,
@@ -92,14 +105,27 @@ export class VehicleBookingTimeline
     const vehiclesJson = context.parameters.VehiclesJson.raw ?? "";
     const bookingsJson = context.parameters.BookingsJson.raw ?? "";
     const statusColorsJson = context.parameters.StatusColorsJson.raw ?? "";
+    const jobsJson = context.parameters.JobsJson.raw ?? "";
 
-    if (
+    const dataChanged =
       vehiclesJson !== this.cachedVehiclesJson ||
-      bookingsJson !== this.cachedBookingsJson
-    ) {
+      bookingsJson !== this.cachedBookingsJson;
+    if (dataChanged) {
       this.cachedVehiclesJson = vehiclesJson;
       this.cachedBookingsJson = bookingsJson;
       this.cachedData = parseTimelineData(vehiclesJson, bookingsJson);
+    }
+
+    // Jobs are matched against the parsed vehicles, so re-parse when either input changes.
+    if (dataChanged || jobsJson !== this.cachedJobsJson) {
+      this.cachedJobsJson = jobsJson;
+      const jobIssues: string[] = [];
+      this.cachedJobs = parseMaintenanceJobs(
+        jobsJson,
+        new Set(this.cachedData.vehicles.map((vehicle) => vehicle.id)),
+        jobIssues
+      ).filter(isOpenJob);
+      this.cachedJobIssues = jobIssues;
     }
 
     if (statusColorsJson !== this.cachedStatusColorsJson) {
