@@ -54,7 +54,7 @@ interface BookingTimelineProps {
 }
 
 function formatBookingLabel(booking: Booking): string {
-  return `${booking.title} · ${booking.status}`;
+  return `#${booking.id} · ${booking.title} · ${booking.status}`;
 }
 
 function getVehicleDetailLines(vehicle: Vehicle): string[] {
@@ -214,7 +214,7 @@ export function BookingTimeline({
       data.bookings
         .filter((booking) => visibleVehicleIds.has(booking.vehicleId))
         .map((booking) => {
-        const fullLabel = `${booking.title}; ${booking.status}; ${
+        const fullLabel = `#${booking.id}; ${booking.title}; ${booking.status}; ${
           vehicleTitles.get(booking.vehicleId) ?? booking.vehicleId
         }; ${new Date(booking.start).toLocaleString()} – ${new Date(
           booking.end

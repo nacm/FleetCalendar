@@ -128,11 +128,11 @@ describe("parseTimelineData", () => {
 
   it("accepts only safe hexadecimal status colors", () => {
     const colors = parseStatusColors(
-      JSON.stringify({ Confirmed: "#abc", Pending: "url(javascript:alert(1))" })
+      JSON.stringify({ Confirmed: "#abc", Booked: "url(javascript:alert(1))" })
     );
 
     expect(getStatusColor("confirmed", colors)).toBe("#abc");
-    expect(getStatusColor("pending", colors)).toBe("#D97706");
+    expect(getStatusColor("booked", colors)).toBe("#D97706");
     expect(getStatusTextColor("#abc")).toBe("#111827");
     expect(getStatusTextColor("#123")).toBe("#ffffff");
   });
