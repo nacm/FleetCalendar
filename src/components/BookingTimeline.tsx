@@ -25,6 +25,11 @@ interface TimelineGroup extends TimelineGroupBase {
 const UNCATEGORISED = "Uncategorised";
 const CATEGORY_ID_PREFIX = "category::";
 
+function todayColumnClass(start: number, end: number): string[] {
+  const now = Date.now();
+  return start <= now && now < end ? ["fleet-today-column"] : [];
+}
+
 interface TimelineItem extends TimelineItemBase<number> {
   id: string;
   group: string;
@@ -384,6 +389,7 @@ export function BookingTimeline({
               sidebarWidth={hasVehicleDetails ? 260 : 230}
               lineHeight={hasVehicleDetails ? 48 : 30}
               groupRenderer={renderGroup}
+              verticalLineClassNamesForTime={todayColumnClass}
               minZoom={60 * 60 * 1000}
               maxZoom={366 * 24 * 60 * 60 * 1000}
               buffer={2}

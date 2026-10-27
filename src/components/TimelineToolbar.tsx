@@ -8,7 +8,7 @@ interface TimelineToolbarProps {
   onViewModeChange: (mode: ViewMode) => void;
 }
 
-const viewModes: ViewMode[] = ["day", "week", "month"];
+const viewModes: ViewMode[] = [ "week", "month"];
 
 export function TimelineToolbar({
   viewMode,

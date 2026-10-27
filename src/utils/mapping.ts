@@ -2,14 +2,10 @@ import { Booking, StatusColors, TimelineData, Vehicle } from "../types/booking";
 import { parseOffsetDate } from "./dates";
 
 const defaultColors: StatusColors = {
-  confirmed: "#2563EB",
-  booked: "#2563EB",
-  pending: "#D97706",
-  active: "#059669",
+  booked: "#D97706",
   hired: "#0F766E",
   returned: "#475569",
-  cancelled: "#6B7280",
-  maintenance: "#7C3AED",
+  cancelled: "#6B7280"
 };
 
 type JsonRecord = Record<string, unknown>;
@@ -221,7 +217,7 @@ export function parseStatusColors(
         typeof color === "string" &&
         /^(?:#[\da-f]{3}|#[\da-f]{4}|#[\da-f]{6}|#[\da-f]{8})$/i.test(color)
       ) {
-        colors[status.toLowerCase()] = color;
+        colors[status.trim().toLowerCase()] = color;
       } else {
         issues.push(`Status color for "${status}" is invalid and was ignored.`);
       }
@@ -237,7 +233,7 @@ export function getStatusColor(
   status: string,
   colors: StatusColors
 ): string {
-  return colors[status.toLowerCase()] ?? "#334155";
+  return colors[status.trim().toLowerCase()] ?? "#334155";
 }
 
 export function getStatusTextColor(background: string): string {
