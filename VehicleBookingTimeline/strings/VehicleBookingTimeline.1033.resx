@@ -78,4 +78,10 @@
   <data name="ActionSequence_Description" xml:space="preserve">
     <value>Increments when selection or visible range changes</value>
   </data>
+  <data name="OnSelect" xml:space="preserve">
+    <value>On select</value>
+  </data>
+  <data name="OnSelect_Description" xml:space="preserve">
+    <value>Runs when a booking is selected; read SelectedBookingId</value>
+  </data>
 </root>

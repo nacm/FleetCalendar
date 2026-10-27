@@ -199,7 +199,15 @@ Notes:
 - If `OnChange` does not fire from the PCF output in your runtime, use a short-interval timer that compares `VehicleBookingTimeline1.VisibleRangeJson` with the last value it saw.
 - If the filter is not delegable, narrow it with a branch or vehicle filter, or return the bounded set from a Power Automate flow.
 
-Power Apps can use `SelectedBookingId` to select/open a record from an explicit host-side button or supported output-change behavior. Bind `VisibleRangeJson` and refresh the bounded booking query when `ActionSequence` changes; verify output/event behavior in the target Canvas runtime rather than assuming a PCF output itself invokes navigation.
+The control exposes a standard `OnSelect` event (declared with `<common-event name="OnSelect" />`). It runs after a booking is clicked or activated with Enter/Space, and `SelectedBookingId` already holds the clicked booking when it runs:
+
+```powerfx
+// VehicleBookingTimeline1.OnSelect
+Set(varSelectedBooking, LookUp(HireRecords, ID = Value(VehicleBookingTimeline1.SelectedBookingId)));
+Navigate(BookingDetailScreen)
+```
+
+Unverified: the event is raised from `updateView` after outputs are published, and this has only been compiled and built, not run in a Canvas app. The local harness does not execute Power Fx events. Power Apps can use `SelectedBookingId` to select/open a record from an explicit host-side button or supported output-change behavior. Bind `VisibleRangeJson` and refresh the bounded booking query when `ActionSequence` changes; verify output/event behavior in the target Canvas runtime rather than assuming a PCF output itself invokes navigation.
 
 ## Troubleshooting
 

@@ -26,7 +26,7 @@ export class VehicleBookingTimeline
   private cachedStatusColors = parseStatusColors("");
   private cachedColorIssues: string[] = [];
   private rangeInputIssues: string[] = [];
-
+  private pendingSelectEvent = false;
   public init(
     context: ComponentFramework.Context<IInputs>,
     notifyOutputChanged: () => void
@@ -41,6 +41,12 @@ export class VehicleBookingTimeline
     context: ComponentFramework.Context<IInputs>
   ): React.ReactElement {
     this.syncInputs(context, true);
+
+    // Raised from updateView so SelectedBookingId has already been published when the Canvas OnSelect formula runs.
+    if (this.pendingSelectEvent) {
+      this.pendingSelectEvent = false;
+      context.events?.OnSelect?.();
+    }
 
     return React.createElement(BookingTimeline, {
       data: {
@@ -149,6 +155,7 @@ export class VehicleBookingTimeline
   private handleSelectBooking = (bookingId: string): void => {
     this.selectedBookingId = bookingId;
     this.actionSequence += 1;
+    this.pendingSelectEvent = true;
     this.notifyOutputChanged();
   };
 
