@@ -137,6 +137,68 @@ BookingsJson =
 
 For a Lookup vehicle column, map `vehicleId: VehicleID.Id`; for a Number column, map `vehicleId: VehicleID`. The status-based `start`/`end` mapping above is illustrative: align the status names and actual-versus-scheduled date policy with the tenant's business rules, and provide one canonical interval per record. Verify actual `JSON` date serialization in the target Canvas runtime and ensure offset-aware ISO timestamps represent the intended instant. Do not append `Z` to local wall-clock timestamps unless converting them to UTC. SharePoint delegation and list-view thresholds must be tested with the deployed schema; `ClearCollect` in this example is illustrative and is not a guarantee of complete/delegable data.
 
+### Reloading bookings when the visible range changes
+
+Use a buffered, debounced reload driven by `VisibleRangeJson`. Vehicles load once (for example in `App.OnStart` or `Screen.OnVisible`) and are not re-queried on pan. Illustrative Power Fx; adjust names, and verify in the target Canvas runtime:
+
+```powerfx
+// Screen.OnVisible: initial state and first load
+Set(varLoadedStart, Blank());
+Set(varLoadedEnd, Blank());
+Set(varLoading, false);
+UpdateContext({locReload: true});
+
+// VehicleBookingTimeline1.OnChange (if it fires for the output; otherwise poll from the timer below):
+// only record the requested range and restart the debounce timer.
+Set(varRange, ParseJSON(VehicleBookingTimeline1.VisibleRangeJson));
+Set(varViewStart, DateTimeValue(Text(varRange.start)));
+Set(varViewEnd, DateTimeValue(Text(varRange.end)));
+If(
+    IsBlank(varLoadedStart) || varViewStart < varLoadedStart || varViewEnd > varLoadedEnd,
+    UpdateContext({locRestartTimer: false}); UpdateContext({locRestartTimer: true})
+);
+```
+
+Timer `tmrReload`: `Duration = 400`, `AutoStart = locRestartTimer`, `Reset = !locRestartTimer`, `Repeat = false`. Its `OnTimerEnd`:
+
+```powerfx
+// Load the visible span plus one span either side, so small pans do not need a reload.
+With(
+    {
+        span: DateDiff(varViewStart, varViewEnd, TimeUnit.Minutes),
+        reqId: Text(Now(), "yyyymmddhhmmssfff")
+    },
+    Set(varRequestId, reqId);
+    Set(varWantStart, DateAdd(varViewStart, -span, TimeUnit.Minutes));
+    Set(varWantEnd, DateAdd(varViewEnd, span, TimeUnit.Minutes));
+    Set(varLoading, true);
+    // Overlap test, not "start inside range", so long bookings that begin earlier still appear.
+    // Index PickupDate, ReturnDate and VehicleID in SharePoint and confirm there is no delegation warning.
+    With(
+        {
+            rows: Filter(HireRecords, PickupDate < varWantEnd && ReturnDate > varWantStart)
+        },
+        // Ignore the result if a newer request has started in the meantime.
+        If(
+            varRequestId = reqId,
+            // Swap the data in one step; do not clear first, or the timeline flashes empty.
+            ClearCollect(colBookings, rows);
+            Set(varLoadedStart, varWantStart);
+            Set(varLoadedEnd, varWantEnd)
+        )
+    );
+    Set(varLoading, false)
+);
+```
+
+Notes:
+
+- Do not set `CalendarStartDate` or `ViewMode` from the reload logic. Only change them from a deliberate user action (for example a "Go to date" control), otherwise a reload can reset the view and trigger another range change.
+- Show a loading indicator bound to `varLoading`.
+- Category utilisation percentages only count the bookings supplied. The buffer keeps them correct while panning, but they are wrong if the loaded window is narrower than the visible range.
+- If `OnChange` does not fire from the PCF output in your runtime, use a short-interval timer that compares `VehicleBookingTimeline1.VisibleRangeJson` with the last value it saw.
+- If the filter is not delegable, narrow it with a branch or vehicle filter, or return the bounded set from a Power Automate flow.
+
 Power Apps can use `SelectedBookingId` to select/open a record from an explicit host-side button or supported output-change behavior. Bind `VisibleRangeJson` and refresh the bounded booking query when `ActionSequence` changes; verify output/event behavior in the target Canvas runtime rather than assuming a PCF output itself invokes navigation.
 
 ## Troubleshooting
