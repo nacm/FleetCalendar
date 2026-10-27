@@ -33,6 +33,19 @@ describe("parseTimelineData", () => {
     });
     expect(data.vehicles[1].make).toBeUndefined();
     expect(data.vehicles[1].currentLocation).toBeUndefined();
+    expect(data.vehicles[1].category).toBeUndefined();
+  });
+
+  it("reads vehicle category from text and lookup shapes", () => {
+    const data = parseTimelineData(
+      JSON.stringify([
+        { ID: 1, Title: "A", VehicleCategory: "Trucks" },
+        { ID: 2, Title: "B", VehicleCategory: { Id: 3, Value: "Buses" } },
+      ]),
+      "[]"
+    );
+
+    expect(data.vehicles.map((vehicle) => vehicle.category)).toEqual(["Trucks", "Buses"]);
   });
 
   it("normalizes numeric and SharePoint lookup vehicle IDs to matching strings", () => {

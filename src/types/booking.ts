@@ -14,6 +14,7 @@ export interface Vehicle {
   make?: string;
   model?: string;
   year?: string;
+  category?: string;
   currentLocation?: string;
 }
 

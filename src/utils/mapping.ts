@@ -133,6 +133,9 @@ export function parseTimelineData(
       make: optionalLabel(readField(row, "make", "Make", "VehicleMake")),
       model: optionalLabel(readField(row, "model", "Model", "VehicleModel")),
       year: optionalLabel(readField(row, "year", "Year", "VehicleYear", "ModelYear")),
+      category: optionalLabel(
+        readField(row, "category", "Category", "VehicleCategory")
+      ),
       currentLocation: optionalLabel(
         readField(row, "currentLocation", "CurrentLocation", "VehicleCurrentLocation")
       ),

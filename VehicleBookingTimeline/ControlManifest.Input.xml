@@ -3,7 +3,7 @@
   <control
     namespace="FleetSchedule"
     constructor="VehicleBookingTimeline"
-    version="1.0.2"
+    version="1.0.3"
     display-name-key="VehicleBookingTimeline"
     description-key="VehicleBookingTimeline_Description"
     control-type="virtual">

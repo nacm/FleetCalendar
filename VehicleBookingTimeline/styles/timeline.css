@@ -89,6 +89,13 @@
   z-index: 3;
 }
 
+.fleet-timeline-canvas .rct-item.fleet-utilization-cell {
+  font-size: 11px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .fleet-timeline-canvas .rct-item.fleet-booking-selected {
   box-shadow: 0 0 0 2px #ffffff, 0 0 0 4px #111827;
   z-index: 83 !important;
@@ -98,6 +105,51 @@
   align-items: center;
   display: flex;
   justify-content: flex-start;
+}
+
+.fleet-category-actions {
+  display: flex;
+  gap: 6px;
+  padding: 2px 0;
+}
+
+.fleet-category-actions button {
+  background: #ffffff;
+  border: 1px solid #9ca3af;
+  border-radius: 3px;
+  cursor: pointer;
+  font: inherit;
+  padding: 2px 8px;
+}
+
+.fleet-category-toggle {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  color: #111827;
+  cursor: pointer;
+  display: flex;
+  font: inherit;
+  gap: 6px;
+  padding: 0 8px;
+  text-align: left;
+  width: 100%;
+}
+
+.fleet-category-toggle:focus-visible {
+  outline: 2px solid #111827;
+  outline-offset: -2px;
+}
+
+.fleet-category-name {
+  font-weight: 700;
+}
+
+.fleet-category-count {
+  color: #4b5563;
+  font-size: 11px;
+  margin-left: auto;
+  white-space: nowrap;
 }
 
 .fleet-vehicle-label {
